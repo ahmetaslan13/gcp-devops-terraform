@@ -2,7 +2,7 @@ name: Terraform Apply on Approved PR
 
 on:
   pull_request:
-    # types: [closed]
+    types: [closed]
 
 jobs:
   terraform:
