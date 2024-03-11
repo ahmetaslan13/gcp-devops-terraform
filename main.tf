@@ -5,7 +5,7 @@ provider "google" {
 }
 
 resource "google_storage_bucket" "my_bucket" {
-  name     = "cicd-test-bucket" # Replace with your desired bucket name
+  name     = "github-actions-test-bucket" # Replace with your desired bucket name
   location = "US"               # Replace with your desired location
 
   # You can add more configuration options here as needed
