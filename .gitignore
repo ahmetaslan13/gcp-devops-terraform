@@ -1,0 +1,14 @@
+# Ignore all files ending with ".tfstate"
+*.tfstate
+
+# Ignore all files with ".tfstate." in the middle (e.g., `terraform.tfstate.backup`)
+*.tfstate.*
+
+# Ignore the `.terraform` directory itself
+.terraform/
+
+# Ignore any `.terraform` directories nested under other directories
+**/.terraform/
+
+# Ignore `.git` directory
+.git/
