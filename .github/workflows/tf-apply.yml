@@ -1,6 +1,6 @@
-# This YAML file defines GitHub Actions to apply Terraform when a PR is merged into the main branch.
+# GitHub Actions workflow for applying Terraform upon PR merge into the main branch.
 
-name: Terraform Apply on Approved PR  # Name of the action set.
+name: Terraform Apply on Approved PR  # Descriptive title for this action set.
 
 on:
   pull_request:
@@ -10,10 +10,10 @@ jobs:
   terraform:
     runs-on: ubuntu-latest  # Runs on the latest version of Ubuntu.
 
-    # Limits the action with conditions.
+    # Limits the action with conditions to apply only on PR merge into the main branch.
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
 
-    # Use the Bash shell regardless of whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest.
+    # Set Bash as the shell for consistent execution across different platforms.
     defaults:
       run:
         shell: bash
@@ -23,26 +23,25 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Installs the latest version of Terraform CLI and configures the Terraform CLI configuration file with a Terraform Cloud user API token.
+    # Sets up Terraform with necessary configurations and credentials.
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # Initializes a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    # Initializes the Terraform working directory.
     - name: Terraform Init
       run: terraform init
       env:
         GOOGLE_CREDENTIALS: ${{secrets.GCP_SA_KEY}}
-        
-    # Checks that all Terraform configuration files adhere to a canonical format.
+
+    # Formats Terraform configuration files.
     - name: Terraform Format
       run: terraform fmt
       env:
         GOOGLE_CREDENTIALS: ${{secrets.GCP_SA_KEY}}
 
-    # On push to "main", builds or changes infrastructure according to Terraform configuration files.
-    # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    # Applies Terraform changes upon PR merge into the main branch.
     - name: Terraform Apply
       run: terraform apply -auto-approve -input=false
       env:

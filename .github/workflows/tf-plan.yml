@@ -1,6 +1,6 @@
-# This YAML file defines GitHub Actions to generate a Terraform plan when a PR is opened.
+# GitHub Actions workflow for generating Terraform plan upon PR creation.
 
-name: Terraform Plan on PR  # Name of the action set.
+name: Terraform Plan on PR  # Descriptive title for this action set.
 
 on:
   pull_request:
@@ -8,14 +8,14 @@ on:
       - '*'  # Triggered on any branch when a PR is opened.
 
 permissions:
-  contents: read
+  contents: read  # Permissions set to read for repository content access.
 
 jobs:
   terraform:
-    name: 'Terraform'  # Name of the job.
+    name: 'Terraform'  # Name identifying this job.
     runs-on: ubuntu-latest  # Runs on the latest version of Ubuntu.
 
-    # Use the Bash shell regardless of whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest.
+    # Set Bash as the shell for consistent execution across different platforms.
     defaults:
       run:
         shell: bash
@@ -25,19 +25,19 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Installs the latest version of Terraform CLI and configures the Terraform CLI configuration file with a Terraform Cloud user API token.
+    # Sets up Terraform with necessary configurations and credentials.
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # Initializes a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    # Initializes the Terraform working directory.
     - name: Terraform Init
       run: terraform init
       env:
         GOOGLE_CREDENTIALS: ${{secrets.GCP_SA_KEY}}
 
-    # Checks that all Terraform configuration files adhere to a canonical format.
+    # Formats Terraform configuration files.
     - name: Terraform Format
       run: terraform fmt
       env:
