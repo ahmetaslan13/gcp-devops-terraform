@@ -42,6 +42,8 @@ This project includes two Terraform configurations (`main.tf`) and two GitHub Ac
 This repository leverages GitHub Actions to automate Terraform execution within the CI/CD pipeline.
 
 - Upon pull request creation, the `tf-plan.yml` workflow generates a Terraform execution plan.
+  
+![Screenshot 2024-03-12 at 8 30 36 AM](https://github.com/ahmetaslan13/gcp-devops-terraform/assets/72533023/83188c54-f8e9-4a09-9021-4ead596011b5)
 
 - Upon pull request merge to the `main` branch, the `tf-apply.yml` workflow applies Terraform changes and provisions infrastructure.
 
