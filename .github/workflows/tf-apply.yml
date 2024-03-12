@@ -1,42 +1,46 @@
-name: Terraform Apply on Approved PR
+# This YAML file defines GitHub Actions to apply Terraform when a PR is merged into the main branch.
+
+name: Terraform Apply on Approved PR  # Name of the action set.
 
 on:
   pull_request:
-    types: [closed]
+    types: [closed]  # Triggered only when a PR is closed.
 
 jobs:
   terraform:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Runs on the latest version of Ubuntu.
+
+    # Limits the action with conditions.
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
- 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+
+    # Use the Bash shell regardless of whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest.
     defaults:
       run:
         shell: bash
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
+    # Clones the repository to the GitHub Actions runner.
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    # Installs the latest version of Terraform CLI and configures the Terraform CLI configuration file with a Terraform Cloud user API token.
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    # Initializes a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
 
-    # Checks that all Terraform configuration files adhere to a canonical format
+    # Checks that all Terraform configuration files adhere to a canonical format.
     - name: Terraform Format
       run: terraform fmt
       env:
-            GOOGLE_CREDENTIALS: ${{secrets.GCP_SA_KEY}}
+        GOOGLE_CREDENTIALS: ${{secrets.GCP_SA_KEY}}
 
-      # On push to "main", build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    # On push to "main", builds or changes infrastructure according to Terraform configuration files.
+    # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       run: terraform apply -auto-approve -input=false
       env:

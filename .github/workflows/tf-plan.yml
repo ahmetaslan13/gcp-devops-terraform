@@ -1,45 +1,49 @@
-name: Terraform Plan on PR
+# This YAML file defines GitHub Actions to generate a Terraform plan when a PR is opened.
+
+name: Terraform Plan on PR  # Name of the action set.
 
 on:
   pull_request:
     branches:
-      - '*'
-      
+      - '*'  # Triggered on any branch when a PR is opened.
+
 permissions:
   contents: read
 
 jobs:
   terraform:
-    name: 'Terraform'
-    runs-on: ubuntu-latest
- 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    name: 'Terraform'  # Name of the job.
+    runs-on: ubuntu-latest  # Runs on the latest version of Ubuntu.
+
+    # Use the Bash shell regardless of whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest.
     defaults:
       run:
         shell: bash
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
+    # Clones the repository to the GitHub Actions runner.
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    # Installs the latest version of Terraform CLI and configures the Terraform CLI configuration file with a Terraform Cloud user API token.
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    # Initializes a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{secrets.GCP_SA_KEY}}
 
-    # Checks that all Terraform configuration files adhere to a canonical format
+    # Checks that all Terraform configuration files adhere to a canonical format.
     - name: Terraform Format
       run: terraform fmt
       env:
-            GOOGLE_CREDENTIALS: ${{secrets.GCP_SA_KEY}}
+        GOOGLE_CREDENTIALS: ${{secrets.GCP_SA_KEY}}
 
-    # Generates an execution plan for Terraform
+    # Generates an execution plan for Terraform.
     - name: Terraform Plan
       run: terraform plan -input=false
       env:
