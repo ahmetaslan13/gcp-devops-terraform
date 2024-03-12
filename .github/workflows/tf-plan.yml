@@ -1,6 +1,6 @@
 # GitHub Actions workflow for generating Terraform plan upon PR creation.
 
-name: Terraform Plan on PR  # Descriptive title for this action set.
+name: Terraform Plan # Descriptive title for this action set.
 
 on:
   pull_request:
@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   terraform:
+    name: on PR
     runs-on: ubuntu-latest  # Runs on the latest version of Ubuntu.
 
     # Set Bash as the shell for consistent execution across different platforms.
