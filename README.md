@@ -43,8 +43,6 @@ This repository leverages GitHub Actions to automate Terraform execution within 
 
 - Upon pull request creation, the `tf-plan.yml` workflow generates a Terraform execution plan.
 
-![Screenshot 2024-03-12 at 8 30 36 AM](https://gist.github.com/assets/72533023/ac26e5f0-d255-4454-832b-ec3eaf6d95a0)
-
 - Upon pull request merge to the `main` branch, the `tf-apply.yml` workflow applies Terraform changes and provisions infrastructure.
 
 **Important Note:**
