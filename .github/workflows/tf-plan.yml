@@ -12,7 +12,6 @@ permissions:
 
 jobs:
   terraform:
-    name: 'Terraform'  # Name identifying this job.
     runs-on: ubuntu-latest  # Runs on the latest version of Ubuntu.
 
     # Set Bash as the shell for consistent execution across different platforms.
