@@ -1,6 +1,6 @@
 # GitHub Actions workflow for applying Terraform upon PR merge into the main branch.
 
-# name: Terraform Apply on Approved PR  # Descriptive title for this action set.
+name: Terraform Apply  # Descriptive title for this action set.
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   terraform:
-    name: Terraform Apply on Approved PR  
+    name:  on Approved PR
     runs-on: ubuntu-latest  # Runs on the latest version of Ubuntu.
 
     # Limits the action with conditions to apply only on PR merge into the main branch.
