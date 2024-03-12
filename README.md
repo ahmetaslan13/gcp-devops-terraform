@@ -47,4 +47,3 @@ This repository leverages GitHub Actions to automate Terraform execution within 
 **Important Note:**
 
 - The `tf-apply.yml` workflow uses `-auto-approve` flag, which automatically approves Terraform apply without manual intervention.  **Use this flag with caution in production environments.**
-
